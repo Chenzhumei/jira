@@ -1,4 +1,5 @@
 import * as qs from 'qs';
+import { useCallback } from 'react';
 import * as auth from "./../auth-provider";
 import {useAuth} from './../context/auth-context';
 
@@ -10,7 +11,7 @@ interface Config extends RequestInit {
     data?: object;
 }
 
-export const http = async (endpoint: string, {data, token, headers, ...customConfig}: Config) => {
+export const http = async (endpoint: string, {data, token, headers, ...customConfig}: Config = {}) => {
       const config = {
         method: "GET",
         headers: {
@@ -44,3 +45,18 @@ export const http = async (endpoint: string, {data, token, headers, ...customCon
         });
     }
 
+
+// JS 中的typeof，是在runtime时运行的
+// return typeof 1 === 'number'
+
+// TS 中的typeof，是在静态环境运行的
+// return (...[endpoint, config]: Parameters<typeof http>) =>
+export const useHttp = () => {
+    const { user } = useAuth();
+    // utility type 的用法：用泛型给它传入一个其他类型，然后utility type对这个类型进行某种操作
+    return useCallback(
+      (...[endpoint, config]: Parameters<typeof http>) =>
+        http(endpoint, { ...config, token: user?.token }),
+      [user?.token]
+    );
+  };    
