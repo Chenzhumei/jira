@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { DevTools, loadServer } from "jira-dev-tool";
+import 'antd/dist/antd.css';
 import { AppProviders } from './context';
 
 loadServer(() => ReactDOM.render(
