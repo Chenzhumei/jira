@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 
-export const cleanObject = (object: any) => {
-   const result = {...object};
-   Object.keys(object).forEach(key => {
-       const value = object[key];
-       if (!isFalsy(value)) {
-         delete result[key];
-       }
-   });
-   return result;
+
+export const isVoid = (value: unknown) =>
+  value === undefined || value === null || value === "";
+
+export const cleanObject = (object?: { [key: string]: unknown }) => {
+      if (!object) {
+        return {};
+      }
+      const result = { ...object };
+      Object.keys(result).forEach((key) => {
+        const value = result[key];
+        if (isVoid(value)) {
+          delete result[key];
+        }
+      });
+      return result;
 }
 
 export const isFalsy = (value: any) => value === 0 ? true : !!value;

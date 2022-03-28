@@ -2,12 +2,14 @@ import { Table } from 'antd';
 import React from 'react';
 import {User} from './search-panel'
 
+
 interface Project {
   id: string;
   name: string;
   personId: string;
   pin: string;
-  organizetion: string;
+  organization: string;
+  created: number;
 }
 
 interface ListProps {
@@ -23,6 +25,10 @@ export const List = ({list, users}: ListProps) => {
            sorter: (a,b) => a.name.localeCompare(b.name)
         },
         {
+            title:'部门',
+            dataIndex: 'organization'
+         },
+        {
             title:'负责人',
             render(value, project) {
                 return <span>
@@ -30,5 +36,15 @@ export const List = ({list, users}: ListProps) => {
                 </span>
             }
          },
+         {
+            title: "创建时间",
+            render(value, project) {
+              return (
+                <span>
+                  {project.created }    
+                </span>
+              );
+            }
+        },
     ]} dataSource={list}/>
 }

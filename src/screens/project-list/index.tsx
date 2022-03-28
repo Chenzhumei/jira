@@ -5,6 +5,7 @@ import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 import * as qs from 'qs';
 import { useHttp } from '../../utils/http';
+import { ScreenContainer } from '../../components/lib';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -27,9 +28,10 @@ export const ProjectListScreen = () => {
         client('users').then(setUsers);
      });
     return (
-        <div>
+        <ScreenContainer>
+             <h1>项目列表</h1>
             <SearchPanel users={users} param={param} setParam={setParam}/>
             <List list={list} users={users}/>
-        </div>
+        </ScreenContainer>
     );
 }
