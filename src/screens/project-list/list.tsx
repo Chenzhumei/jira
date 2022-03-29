@@ -1,4 +1,5 @@
-import { Table, TableProps } from 'antd';
+import { Table,  } from 'antd';
+import { TableProps } from 'antd/lib/table';
 import React from 'react';
 import {User} from './search-panel'
 
