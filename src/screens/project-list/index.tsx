@@ -8,9 +8,6 @@ import { ScreenContainer } from '../../components/lib';
 import { Typography } from 'antd';
 import { useAsync } from './use-async';
 
-
-const apiUrl = process.env.REACT_APP_API_URL;
-
 export const ProjectListScreen = () => {
     const [param, setParam] = useState({
         name: '',
