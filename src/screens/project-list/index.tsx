@@ -1,11 +1,13 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
 import { cleanObject, useDebounce, useMount } from '../../utils';
-import { List } from "./list";  
+import { List, Project } from "./list";  
 import { SearchPanel } from "./search-panel";
-import * as qs from 'qs';
 import { useHttp } from '../../utils/http';
 import { ScreenContainer } from '../../components/lib';
+import { Typography } from 'antd';
+import { useAsync } from './use-async';
+
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -15,13 +17,15 @@ export const ProjectListScreen = () => {
         personId: ''
     });
     const [users, setUsers] = useState([]);
-    const [list, setList] = useState([]);
+   
     const client = useHttp();
+
+    const {run, isLoading, error, data: list} = useAsync<Project[]>()
 
     const debouncedParam = useDebounce(param, 1000);
 
     useEffect(() => {
-       client('projects', {data: cleanObject(debouncedParam)}).then(setList) 
+       run(client('projects', {data: cleanObject(debouncedParam)}))
     }, [debouncedParam]);
 
     useMount(() => {
@@ -31,7 +35,8 @@ export const ProjectListScreen = () => {
         <ScreenContainer>
              <h1>项目列表</h1>
             <SearchPanel users={users} param={param} setParam={setParam}/>
-            <List list={list} users={users}/>
+            {error ? <Typography.Text type='danger'>{error.message}</Typography.Text>:null}
+            <List dataSource={list || []} users={users} loading={isLoading}/>
         </ScreenContainer>
     );
 }
